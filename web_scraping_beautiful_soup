@@ -1,0 +1,25 @@
+urls = ["https://fueler.io/cmchelsimehta/zomato-push-notifications-copywriting-challenge",
+       "https://fueler.io/cmchelsimehta/guide-to-freelance-content-writing-by-chelsi-mehta-community-session",
+        "https://fueler.io/yuvrajgarg/why-supplements-are-a-big-scam-thumbnail-design",
+        "https://fueler.io/yuvrajgarg/how-apple-is-branding-your-brain-thumbnail-design"]
+  
+for url in urls:
+  response = requests.get(url)
+
+  dict_op = {}
+  if response.status_code == 200:
+      soup = BeautifulSoup(response.text, "html.parser")
+      heading = soup.find("h4", class_="timeline-title").text
+      # print(h4_tag.text)
+      a_tag = soup.select_one('a.d-flex.align-items-center')
+      href_link = a_tag['href']
+      dict_op[heading] = href_link  
+      print(dict_op)
+      div_tag = soup.find_all('div', class_='work-key-word-btn')
+      key_words = {}
+      key_list = []
+      for i in div_tag:
+        key_list.append(i.text)
+        key_words[heading]=key_list
+        
+      print(key_words)
