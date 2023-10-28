@@ -29,16 +29,18 @@ UserSchema.pre(
     'save',
     async function (next) {
         const user = this;
-        const hash = await bcrypt.hash(this.password, parseInt(process.env.SALT));
-        this.password = hash;
+        // const hash = await bcrypt.hash(this.password, parseInt("10"));
+        // this.password = hash;
+        this.isVerified=true;
         next();
     }
 );
 
 UserSchema.methods.isValidPassword = async function (password) {
     const user = this;
-    const compare = await bcrypt.compare(password, user.password);
-
+    // const compare = await bcrypt.compare(password, user.password);
+    const compare=(password==user.password);
+    console.log(compare)
     return compare;
 }
 

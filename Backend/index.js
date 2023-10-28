@@ -11,7 +11,7 @@ const bodyParser = require('body-parser');
 
 
 mongoose.set("strictQuery", true);
-mongoose.connect('mongodb://0.0.0.0:27017/hackniche', { useUnifiedTopology: true, useNewUrlParser: true, });
+mongoose.connect('mongodb://0.0.0.0:27017/datahack2', { useUnifiedTopology: true, useNewUrlParser: true, });
 mongoose.connection.on('error', err => console.log(err));
 mongoose.connection.on('connected', con => console.log("connected to DB"));
 mongoose.connection.on('disconnected', con => console.log("disconnected from DB"));
@@ -27,8 +27,8 @@ app.use('/admin', adminRoutes);
 app.use('/file',fileUploadRoutes);
 app.use('/chat',chatRoutes);
 
-const io=socket(app);
-require('./controllers/chatController')(io);
+// const io=socket(app);
+// require('./controllers/chatController')(io);
 app.use(function (err, req, res, next) {
     res.status(err.status || 500);
     res.json({ error: err });

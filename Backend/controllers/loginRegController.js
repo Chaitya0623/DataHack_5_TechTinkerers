@@ -24,7 +24,7 @@ async function signUpController(req, res) {
             const user = await UserModel.create({ fname, lname, email, password, access_lvl });
             user.save();
             res.json({
-                message: "Success",
+                status: "success",
                 user: req.body
             });
         }
@@ -49,7 +49,8 @@ async function loginController(req, res) {
         }
         else {
             const validate = await user.isValidPassword(password);
-            if (!validate) {
+            // console.log(validate);
+            if (validate === false) {
                 res.json({
                     message: "Wrong Password! Please Try Again!"
                 })
@@ -60,11 +61,13 @@ async function loginController(req, res) {
                 const token = jwt.sign({ user: body }, process.env.JSON_KEY);
                 var isVerified = user.isVerified;
                 //CHECK FOR ISVERIFIED IN FRONTEND ALSO IF NEEDED
-                if (isVerified==="true") {
+                console.log(isVerified);
+                if (isVerified=="true") {
                     res.json({
                         token,
                         access_lvl,
-                        isVerified
+                        isVerified,
+                        status: "success",
                     })
                 }
                 else {
