@@ -14,6 +14,10 @@ import re
 import pickle
 import torch
 import gc
+from langchain.llms import OpenAI
+llm = OpenAI(openai_api_key="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")
+import warnings
+warnings.filterwarnings('ignore')
 
 app = FastAPI()
 
@@ -103,7 +107,33 @@ async def skill_calculation(file: UploadFile = File(...)):
     return {'labels': output['labels'], 'score': output['scores']}
 
 
+from langchain import PromptTemplate
+from langchain.chains import LLMChain
+
+generate_example_template = """
+
+% INSTRUCTIONS
+You are a person who recommends people to upskill themselves.
+
+% TEXTUAL QUESTION
+{label}
+
+% YOUR TASK
+Suggest projects that the person should do, to improve, based on their current skillset.
+"""
   
+@app.post('./project_rec', response_model=SentenceResponse)
+async def project_recommendation(request: SentenceRequest = Body(...)):
+    label = request.skills
+    print(label)
+    prompt = PromptTemplate.from_template(generate_example_template)
+    formatted_prompt = prompt.format(label=label)
+
+    chain = LLMChain(llm=llm, prompt=prompt)
+    example = chain.run(formatted_prompt)
+    example = example.replace('\n','')
+    print(example)
+    return example
 # with open('dolly.pkl', 'rb') as file:
 #     generate_text = pickle.load(file)
 # @app.post("/project_rec", response_model=SentenceResponse)
