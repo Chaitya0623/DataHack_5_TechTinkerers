@@ -1,0 +1,23 @@
+import speech_recognition as sr
+
+# Initialize the recognizer
+recognizer = sr.Recognizer()
+
+# Capture audio from a microphone
+with sr.Microphone() as source:
+    print("Speak something...")
+    audio = recognizer.listen(source)
+    print("Audio captured.")
+
+# Use the Google Web Speech API to convert speech to text
+try:
+    recognized_text = recognizer.recognize_google(audio)
+    print(f"Recognized text: {recognized_text}")
+except sr.UnknownValueError:
+    print("Google Web Speech API could not understand audio.")
+except sr.RequestError as e:
+    print(f"Could not request results from Google Web Speech API; {e}")
+
+# Alternatively, you can use other supported engines like CMU Sphinx or Wit.ai
+# For example, recognizer.recognize_sphinx(audio) or recognizer.recognize_wit(audio, key="YOUR_WIT.AI_API_KEY")
+ 
