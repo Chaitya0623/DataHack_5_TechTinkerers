@@ -1,0 +1,22 @@
+import requests
+from bs4 import BeautifulSoup
+
+
+# repo_url = 'https://github.com/Harshil-Shah03/Kernel-Krushers_TechnoThriveYash'
+repo_url = 'https://github.com/dishantzaveri/SingaporeIndiaHackathon2023_TeamFoxtrot'
+
+response = requests.get(repo_url)
+
+if response.status_code == 200:
+    
+    page_content = response.content
+    soup = BeautifulSoup(page_content, 'html.parser')
+    #lang_stats = soup.find('div', class_='repository-lang-stats-graph')
+    span_element = soup.find_all('span', class_='color-fg-default text-bold mr-1')
+    
+    for i in range(len(span_element)):
+        print()
+        percentage_span = span_element[i].find_next('span')
+        print(f"{span_element[i].text} : {percentage_span.text}")
+else:
+    print(f"Failed to access the repository. Status code: {response.status_code}")
