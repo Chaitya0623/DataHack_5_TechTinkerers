@@ -5,7 +5,7 @@ import pickle
 import pandas as pd
 import numpy as np
 from langchain.llms import OpenAI
-llm = OpenAI(openai_api_key="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")
+llm = OpenAI(openai_api_key="")
 from langchain import PromptTemplate
 from langchain.chains import LLMChain
 from selenium.webdriver.common.by import By
@@ -62,7 +62,7 @@ cols = ['Blockchain', 'Frontend', 'Backend', 'Machine Learning', 'Computer Visio
 dict_op = {}
 key_list = []
 
-os.environ["OPENAI_API_KEY"] = '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'
+os.environ["OPENAI_API_KEY"] = ''
 embeddings = OpenAIEmbeddings()
 db = FAISS.load_local('faiss_index', embeddings)
 
